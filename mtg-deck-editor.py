@@ -18,7 +18,7 @@
 #       Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 #       MA 02110-1301, USA.
 
-from __future__ import with_statement
+from __future__ import print_function, with_statement
 
 from gi.repository import Gio
 from gi.repository import Gtk
@@ -38,6 +38,8 @@ class MtgDeckEditor:
 
         self.window = builder.get_object("window")
         self.image_card = builder.get_object("image_card")
+        self.searchentry = builder.get_object("searchentry")
+        self.liststore_deck = builder.get_object("liststore_deck")
 
     def main(self):
         self.window.show_all()
@@ -50,7 +52,22 @@ class MtgDeckEditor:
         query = widget.get_text()
         card = Card(query)
         self.image_card.set_from_pixbuf(card.pixbuf)
-        print card
+
+    def on_button_card_add_clicked(self, widget, data=None):
+        query = self.searchentry.get_text()
+        card = Card(query)
+        new_amount = 1
+        for row in self.liststore_deck:
+            amount = row[0]
+            name = row[1]
+            if name == card.name:
+                self.liststore_deck.remove(row.iter)
+                new_amount = amount + 1
+                break
+        self.liststore_deck.append([new_amount, card.name])
+
+    def on_button_card_remove_clicked(self, widget, data=None):
+        raise RuntimeError
 
 class Card:
     def __init__(self, query):
@@ -60,7 +77,6 @@ class Card:
         # rotate split cards
         if '//' in query:
             image_url= '%s&options=rotate90' % image_url
-        print image_url
         image_raw = get(image_url).content
         input_stream = Gio.MemoryInputStream.new_from_data(image_raw, None)
         self.pixbuf = Pixbuf.new_from_stream(input_stream, None)
