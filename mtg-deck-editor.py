@@ -24,6 +24,7 @@ from gi.repository import Gio
 from gi.repository import Gtk
 from gi.repository.GdkPixbuf import Pixbuf
 
+from functools32 import lru_cache
 from requests import get
 from html5lib import parse
 
@@ -69,6 +70,7 @@ class MtgDeckEditor:
     def on_button_card_remove_clicked(self, widget, data=None):
         raise RuntimeError
 
+@lru_cache(maxsize=None)
 class Card:
     def __init__(self, query):
         image_url = \
