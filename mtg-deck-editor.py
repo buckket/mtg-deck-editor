@@ -68,7 +68,18 @@ class MtgDeckEditor:
         self.liststore_deck.append([new_amount, card.name])
 
     def on_button_card_remove_clicked(self, widget, data=None):
-        raise RuntimeError
+        query = self.searchentry.get_text()
+        card = Card(query)
+        new_amount = 0
+        for row in self.liststore_deck:
+            amount = row[0]
+            name = row[1]
+            if name == card.name:
+                self.liststore_deck.remove(row.iter)
+                new_amount = amount - 1
+                break
+        if new_amount > 0:
+            self.liststore_deck.append([new_amount, card.name])
 
 @lru_cache(maxsize=None)
 class Card:
