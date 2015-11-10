@@ -223,25 +223,25 @@ class Card:
     def name(self):
         xpath = ".//*[@id='ctl00_ctl00_ctl00_MainContent_SubContent_SubContent_" + \
             "%sRow']/div" % 'name'
-        return self.dom.findall(xpath)[1].text.strip()
+        return self.dom.findall(xpath)[1].text.strip().encode('utf-8')
 
     @property
     def type(self):
         xpath = ".//*[@id='ctl00_ctl00_ctl00_MainContent_SubContent_SubContent_" + \
             "%sRow']/div" % 'type'
-        return self.dom.findall(xpath)[1].text.strip()
+        return self.dom.findall(xpath)[1].text.strip().encode('utf-8')
 
     @property
     def cmc(self):
         xpath = ".//*[@id='ctl00_ctl00_ctl00_MainContent_SubContent_SubContent_" + \
             "%sRow']/div" % 'cmc'
-        return self.dom.findall(xpath)[1].text.strip()
+        return self.dom.findall(xpath)[1].text.strip().encode('utf-8')
 
     @property
     def text(self):
         xpath = ".//*[@id='ctl00_ctl00_ctl00_MainContent_SubContent_SubContent_" + \
             "%sRow']/div/div" % 'text'
-        return self.dom.findall(xpath)[0].text.strip()
+        return self.dom.findall(xpath)[0].text.strip().encode('utf-8')
 
     def __str__(self):
         return "%s | %s | %s | %s" % (self.name, self.type, self.cmc, self.text)
