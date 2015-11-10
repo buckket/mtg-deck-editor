@@ -148,7 +148,7 @@ class MtgDeckEditor:
                 name = row[1]
                 card = get_card(name)
                 if card.cmc == str(cmc):
-                    color = choice(colors)
+                    color = card.color
                     curve[color][cmc] += int(amount)
 
         kc = [int(cmc) - 0.5 for cmc in curve['c'].keys()]
@@ -331,6 +331,12 @@ class Card:
         return self.dom.findall(xpath)[1].text.strip().encode('utf-8')
 
     @property
+    def mana_cost(self):
+        xpath =".//*[@id='ctl00_ctl00_ctl00_MainContent_SubContent_SubContent_" + \
+            "%sRow']/div/img" % 'mana'
+        return [e.attrib['alt'] for e in self.dom.findall(xpath)]
+
+    @property
     def types(self):
         xpath = ".//*[@id='ctl00_ctl00_ctl00_MainContent_SubContent_SubContent_" + \
             "%sRow']/div" % 'type'
@@ -345,6 +351,38 @@ class Card:
             return self.dom.findall(xpath)[1].text.strip().encode('utf-8')
         except IndexError:
             return '0'
+
+    @property
+    def color(self):
+        # colors = ['c', 'w', 'u', 'b', 'r', 'g', 'm']
+        color = 'c' # colorless
+        for s in self.mana_cost:
+            if s == u'White':
+                if color in ('c', 'w'):
+                    color = 'w'
+                else:
+                    color = 'm'
+            if s == u'Blue':
+                if color in ('c', 'u'):
+                    color = 'u'
+                else:
+                    color = 'm'
+            if s == u'Black':
+                if color in ('c', 'b'):
+                    color = 'b'
+                else:
+                    color = 'm'
+            if s == u'Red':
+                if color in ('c', 'r'):
+                    color = 'r'
+                else:
+                    color = 'm'
+            if s == u'Green':
+                if color in ('c', 'g'):
+                    color = 'g'
+                else:
+                    color = 'm'
+        return color
 
     def __str__(self):
         return "%s | %s | %s | %s" % (self.name, self.type, self.cmc, self.text)
