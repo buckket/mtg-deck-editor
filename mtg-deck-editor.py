@@ -355,6 +355,17 @@ class Card:
             return '0'
 
     @property
+    def cmc_lower(self):
+        cmc_lower = 0
+        for s in self.mana_cost:
+            try:
+                cmc_lower += int(s)
+            except ValueError:
+                if not s.startswith('Phyrexian'):
+                    cmc_lower += 1
+        return cmc_lower
+
+    @property
     def color(self):
         # colors = ['c', 'w', 'u', 'b', 'r', 'g', 'm']
         color = 'c' # colorless
