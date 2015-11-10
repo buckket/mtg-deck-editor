@@ -821,6 +821,10 @@ Mana Cost</property>
   </object>
   <object class="GtkWindow" id="window_curve">
     <property name="can_focus">False</property>
+    <property name="type">popup</property>
+    <property name="window_position">center</property>
+    <property name="type_hint">dialog</property>
+    <property name="gravity">center</property>
     <child>
       <object class="GtkBox" id="box3">
         <property name="visible">True</property>

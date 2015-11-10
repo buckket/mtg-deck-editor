@@ -25,7 +25,7 @@ from gi.repository import Gtk
 from gi.repository.GdkPixbuf import Pixbuf
 
 from functools32 import lru_cache
-from random import shuffle
+from random import choice, shuffle
 from requests import get
 from html5lib import parse
 
@@ -77,7 +77,6 @@ class MtgDeckEditor:
         self.liststore_deck = self.builder.get_object("liststore_deck")
         self.adjustment_card_amount = \
             self.builder.get_object("adjustment_card_amount")
-
 
     def main(self):
         self.window_main.show_all()
@@ -135,27 +134,62 @@ class MtgDeckEditor:
 
         ax.set_title('Mana Curve')
 
+        colors = ['c', 'w', 'u', 'b', 'r', 'g', 'm']
+
         curve={}
+        for color in colors:
+            curve[color] = {}
+
         for cmc in range(15):
-            curve[cmc] = 0
+            for color in colors:
+                curve[color][cmc] = 0
             for row in self.liststore_deck:
                 amount = row[0]
                 name = row[1]
                 card = get_card(name)
                 if card.cmc == str(cmc):
-                    curve[cmc] += int(amount)
+                    color = choice(colors)
+                    curve[color][cmc] += int(amount)
 
-        k = [cmc - 0.5 for cmc in curve.keys()]
+        kc = [int(cmc) - 0.5 for cmc in curve['c'].keys()]
+        vc = curve['c'].values()
+        kw = [int(cmc) - 0.5 for cmc in curve['w'].keys()]
+        vw = curve['w'].values()
+        ku = [int(cmc) - 0.5 for cmc in curve['u'].keys()]
+        vu = curve['u'].values()
+        kb = [int(cmc) - 0.5 for cmc in curve['b'].keys()]
+        vb = curve['b'].values()
+        kr = [int(cmc) - 0.5 for cmc in curve['r'].keys()]
+        vr = curve['r'].values()
+        kg = [int(cmc) - 0.5 for cmc in curve['g'].keys()]
+        vg = curve['g'].values()
+        km = [int(cmc) - 0.5 for cmc in curve['m'].keys()]
+        vm = curve['m'].values()
 
-        ax.bar(k, curve.values(), width=1)
+        # this plot uses tango palette colors
+        bc=ax.bar(kc, vc, width=1, color='#c17d11', # “Chocolate”
+                  )
+        bw=ax.bar(kw, vw, width=1, color='#eeeeec', # “Aluminium Highlight”
+                  bottom=vc)
+        bu=ax.bar(ku, vu, width=1, color='#3465a4', # “Sky blue”
+                  bottom=vw)
+        bb=ax.bar(kb, vb, width=1, color='#555753', # “Slate”
+                  bottom=vu)
+        br=ax.bar(kr, vr, width=1, color='#cc0000', # “Scarlet Red”
+                  bottom=vb)
+        bg=ax.bar(kg, vg, width=1, color='#73d216', # “Chameleon”
+                  bottom=vr)
+        bm=ax.bar(km, vm, width=1, color='#c4a000', # “Butter Shadow”
+                  bottom=vg)
         ax.plot()
 
-        canvas = FigureCanvas(fig)
-        self.scrolledwindow_curve.add_with_viewport(canvas)
+        canvas_curve = FigureCanvas(fig)
+        self.scrolledwindow_curve.add_with_viewport(canvas_curve)
 
         self.window_curve.show_all()
 
     def on_button_curve_close_clicked(self, widget, data=None):
+        self.scrolledwindow_curve.remove(self.scrolledwindow_curve.get_child())
         self.window_curve.hide()
 
     def on_button_open_clicked(self, widget, data=None):
