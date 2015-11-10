@@ -114,6 +114,7 @@ class MtgDeckEditor:
     def on_button_open_file_clicked(self, widget, data=None):
         self.filechooserdialog_open.hide()
         filename = self.filechooserdialog_open.get_filename()
+        self.clear()
         with open(filename) as deckfile:
             data = deckfile.read()
             for line in data.split('\n'):
