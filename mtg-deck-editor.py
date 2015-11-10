@@ -85,6 +85,11 @@ class MtgDeckEditor:
         if new_amount > 0:
             self.liststore_deck.append([new_amount, card.name])
 
+    def on_treeview_selection_changed(self, widget, data=None):
+        tree, i = widget.get_selected()
+        card = Card(tree[i][1])
+        self.image_card.set_from_pixbuf(card.pixbuf)
+
 @lru_cache(maxsize=None)
 class Card:
     def __init__(self, query):
