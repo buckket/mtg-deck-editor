@@ -329,8 +329,8 @@ Mana Cost</property>
                         </child>
                         <child>
                           <object class="GtkLabel" id="label_card_text">
-                            <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="no_show_all">True</property>
                             <property name="xalign">1</property>
                             <property name="label" translatable="yes">Card Text</property>
                             <attributes>
@@ -344,8 +344,8 @@ Mana Cost</property>
                         </child>
                         <child>
                           <object class="GtkLabel" id="label_card_text_value">
-                            <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="no_show_all">True</property>
                             <property name="xalign">0</property>
                             <property name="wrap">True</property>
                           </object>
