@@ -146,6 +146,9 @@ class MtgDeckEditor:
         self.window_hand.show_all()
 
     def on_button_hand_close_clicked(self, widget, data=None):
+        for i in range(1,7):
+            button = self.builder.get_object("button_hand_mulligan_%s" % i)
+            button.hide()
         self.window_hand.hide()
 
     def on_button_hand_mulligan_6_clicked(self, widget, data=None):
