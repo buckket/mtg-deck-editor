@@ -178,8 +178,8 @@ class MtgDeckEditor:
 
     def on_treeview_selection_changed(self, widget, data=None):
         tree, i = widget.get_selected()
-        card = get_card(tree[i][1])
-        self.image_card.set_from_pixbuf(card.pixbuf)
+        self.searchentry.set_text(tree[i][1])
+        self.searchentry.activate()
 
     def on_window_hand_delete_event(self, widget, data=None):
         self.window_hand.hide()
