@@ -53,6 +53,7 @@ class MtgDeckEditor:
 
         self.window_main = self.builder.get_object("window_main")
         self.window_hand = self.builder.get_object("window_hand")
+        self.filechooserdialog_open = self.builder.get_object("filechooserdialog_open")
         self.image_card = self.builder.get_object("image_card")
         self.searchentry = self.builder.get_object("searchentry")
         self.liststore_deck = self.builder.get_object("liststore_deck")
@@ -61,6 +62,10 @@ class MtgDeckEditor:
     def main(self):
         self.window_main.show_all()
         Gtk.main()
+
+    def clear(self):
+        for row in self.liststore_deck:
+            self.liststore_deck.remove(row.iter)
 
     def on_window_main_destroy(self, widget, data=None):
         Gtk.main_quit()
@@ -71,8 +76,7 @@ class MtgDeckEditor:
         self.image_card.set_from_pixbuf(card.pixbuf)
 
     def on_button_new_clicked(self, widget, data=None):
-        for row in self.liststore_deck:
-            self.liststore_deck.remove(row.iter)
+        self.clear()
 
     def on_button_card_add_clicked(self, widget, data=None):
         query = self.searchentry.get_text()
@@ -100,6 +104,28 @@ class MtgDeckEditor:
                 break
         if new_amount > 0:
             self.liststore_deck.append([new_amount, card.name])
+
+    def on_button_open_clicked(self, widget, data=None):
+        self.filechooserdialog_open.show()
+
+    def on_button_open_cancel_clicked(self, widget, data=None):
+        self.filechooserdialog_open.hide()
+
+    def on_button_open_file_clicked(self, widget, data=None):
+        self.filechooserdialog_open.hide()
+        filename = self.filechooserdialog_open.get_filename()
+        with open(filename) as deckfile:
+            data = deckfile.read()
+            for line in data.split('\n'):
+                tokens = line.split(' ')
+                try:
+                    amount = int(tokens[0])
+                except ValueError:
+                    continue
+                name = ' '.join(tokens[1:])
+                if name != '':
+                    card = get_card(name)
+                    self.liststore_deck.append([amount, card.name])
 
     def draw_hand(self, size):
         library = Library(self.liststore_deck)
