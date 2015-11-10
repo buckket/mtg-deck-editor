@@ -106,30 +106,25 @@ class MtgDeckEditor:
         card = Card(tree[i][1])
         self.image_card.set_from_pixbuf(card.pixbuf)
 
+lru_cache(maxsize=None)
 class Card:
     def __init__(self, query):
-        self.query = query
-
-    @property
-    def pixbuf(self):
         image_url = \
             "http://gatherer.wizards.com/Handlers/Image.ashx?type=card&name=%s" % \
-            self.query
+            query
         # rotate split cards
-        if '//' in self.query:
+        if '//' in query:
             image_url= '%s&options=rotate90' % image_url
         image_raw = get(image_url).content
         input_stream = Gio.MemoryInputStream.new_from_data(image_raw, None)
-        return Pixbuf.new_from_stream(input_stream, None)
+        self.pixbuf = Pixbuf.new_from_stream(input_stream, None)
 
-    @property
-    def dom(self):
         # handle split cards
         html_url = \
             "http://gatherer.wizards.com/Pages/Card/Details.aspx?name=%s" % \
-            re.sub("(.*) // (.*)", r"[\1]+[//]+[\2]", self.query)
+            re.sub("(.*) // (.*)", r"[\1]+[//]+[\2]", query)
         html = get(html_url).text
-        return parse(html, treebuilder='etree', namespaceHTMLElements=False)
+        self.dom = parse(html, treebuilder='etree', namespaceHTMLElements=False)
 
     @property
     def name(self):
