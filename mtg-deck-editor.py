@@ -56,6 +56,7 @@ class MtgDeckEditor:
         self.image_card = self.builder.get_object("image_card")
         self.searchentry = self.builder.get_object("searchentry")
         self.liststore_deck = self.builder.get_object("liststore_deck")
+        self.adjustment_card_amount = self.builder.get_object("adjustment_card_amount")
 
     def main(self):
         self.window_main.show_all()
@@ -76,13 +77,13 @@ class MtgDeckEditor:
     def on_button_card_add_clicked(self, widget, data=None):
         query = self.searchentry.get_text()
         card = get_card(query)
-        new_amount = 1
+        new_amount = self.adjustment_card_amount.get_value()
         for row in self.liststore_deck:
             amount = row[0]
             name = row[1]
             if name == card.name:
                 self.liststore_deck.remove(row.iter)
-                new_amount = amount + 1
+                new_amount = amount + self.adjustment_card_amount.get_value()
                 break
         self.liststore_deck.append([new_amount, card.name])
 
@@ -95,7 +96,7 @@ class MtgDeckEditor:
             name = row[1]
             if name == card.name:
                 self.liststore_deck.remove(row.iter)
-                new_amount = amount - 1
+                new_amount = amount - self.adjustment_card_amount.get_value()
                 break
         if new_amount > 0:
             self.liststore_deck.append([new_amount, card.name])
