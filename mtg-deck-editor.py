@@ -54,6 +54,10 @@ class MtgDeckEditor:
         card = Card(query)
         self.image_card.set_from_pixbuf(card.pixbuf)
 
+    def on_button_new_clicked(self, widget, data=None):
+        for row in self.liststore_deck:
+            self.liststore_deck.remove(row.iter)
+
     def on_button_card_add_clicked(self, widget, data=None):
         query = self.searchentry.get_text()
         card = Card(query)
