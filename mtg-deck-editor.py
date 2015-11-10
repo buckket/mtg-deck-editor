@@ -29,6 +29,9 @@ from random import shuffle
 from requests import get
 from html5lib import parse
 
+from matplotlib.figure import Figure
+from matplotlib.backends.backend_gtk3cairo import FigureCanvasGTK3Cairo as FigureCanvas
+
 import os
 import re
 
@@ -52,7 +55,9 @@ class MtgDeckEditor:
         self.builder.connect_signals(self)
 
         self.window_main = self.builder.get_object("window_main")
+        self.window_curve = self.builder.get_object("window_curve")
         self.window_hand = self.builder.get_object("window_hand")
+
         self.filechooserdialog_open = \
             self.builder.get_object("filechooserdialog_open")
         self.filechooserdialog_save = \
@@ -67,6 +72,7 @@ class MtgDeckEditor:
         self.label_card_types_value = \
             self.builder.get_object("label_card_types_value")
         self.label_card_text_value = self.builder.get_object("label_card_text_value")
+        self.scrolledwindow_curve = self.builder.get_object('scrolledwindow_curve')
 
         self.liststore_deck = self.builder.get_object("liststore_deck")
         self.adjustment_card_amount = \
@@ -122,6 +128,35 @@ class MtgDeckEditor:
                 else:
                     self.liststore_deck.remove(row.iter)
                 break
+
+    def on_button_curve_clicked(self, widget, data=None):
+        fig = Figure(figsize=(5,5), dpi=100)
+        ax = fig.add_subplot(111)
+
+        ax.set_title('Mana Curve')
+
+        curve={}
+        for cmc in range(15):
+            curve[cmc] = 0
+            for row in self.liststore_deck:
+                amount = row[0]
+                name = row[1]
+                card = get_card(name)
+                if card.cmc == str(cmc):
+                    curve[cmc] += int(amount)
+
+        k = [cmc - 0.5 for cmc in curve.keys()]
+
+        ax.bar(k, curve.values(), width=1)
+        ax.plot()
+
+        canvas = FigureCanvas(fig)
+        self.scrolledwindow_curve.add_with_viewport(canvas)
+
+        self.window_curve.show_all()
+
+    def on_button_curve_close_clicked(self, widget, data=None):
+        self.window_curve.hide()
 
     def on_button_open_clicked(self, widget, data=None):
         self.filechooserdialog_open.show()
