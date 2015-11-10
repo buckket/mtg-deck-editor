@@ -53,7 +53,10 @@ class MtgDeckEditor:
 
         self.window_main = self.builder.get_object("window_main")
         self.window_hand = self.builder.get_object("window_hand")
-        self.filechooserdialog_open = self.builder.get_object("filechooserdialog_open")
+        self.filechooserdialog_open = \
+            self.builder.get_object("filechooserdialog_open")
+        self.filechooserdialog_save = \
+            self.builder.get_object("filechooserdialog_save")
         self.image_card = self.builder.get_object("image_card")
         self.searchentry = self.builder.get_object("searchentry")
         self.liststore_deck = self.builder.get_object("liststore_deck")
@@ -128,6 +131,21 @@ class MtgDeckEditor:
                 if name != '':
                     card = get_card(name)
                     self.liststore_deck.append([amount, card.name])
+
+    def on_button_save_clicked(self, widget, data=None):
+        self.filechooserdialog_save.show()
+
+    def on_button_save_cancel_clicked(self, widget, data=None):
+        self.filechooserdialog_save.hide()
+
+    def on_button_save_file_clicked(self, widget, data=None):
+        self.filechooserdialog_save.hide()
+        filename = self.filechooserdialog_save.get_filename()
+        with open(filename, 'w') as deckfile:
+            for row in self.liststore_deck:
+                amount = row[0]
+                name = row[1]
+                deckfile.write('%s %s\n' % (amount, name))
 
     def draw_hand(self, size):
         library = Library(self.liststore_deck)
