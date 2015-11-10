@@ -90,6 +90,7 @@ class MtgDeckEditor:
         self.image_card.set_from_pixbuf(card.pixbuf)
         self.label_card_name_value.set_text(card.name)
         self.label_card_cmc_value.set_text(card.cmc)
+        self.label_card_types_value.set_text(card.types)
         self.label_card_text_value.set_text(card.text)
 
     def on_button_new_clicked(self, widget, data=None):
@@ -262,7 +263,7 @@ class Card:
         return self.dom.findall(xpath)[1].text.strip().encode('utf-8')
 
     @property
-    def type(self):
+    def types(self):
         xpath = ".//*[@id='ctl00_ctl00_ctl00_MainContent_SubContent_SubContent_" + \
             "%sRow']/div" % 'type'
         return self.dom.findall(xpath)[1].text.strip().encode('utf-8')
