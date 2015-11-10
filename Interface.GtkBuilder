@@ -301,6 +301,7 @@
     <property name="filter">filefilter_dek</property>
     <property name="preview_widget_active">False</property>
     <property name="use_preview_label">False</property>
+    <signal name="file-activated" handler="on_filechooserdialog_open_file_activated" swapped="no"/>
     <child internal-child="vbox">
       <object class="GtkBox" id="filechooserdialog-vbox1">
         <property name="can_focus">False</property>
