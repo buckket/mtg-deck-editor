@@ -65,13 +65,6 @@ class MtgDeckEditor:
 
         self.searchentry = self.builder.get_object("searchentry")
         self.image_card = self.builder.get_object("image_card")
-        self.label_card_name_value = self.builder.get_object("label_card_name_value")
-        self.label_card_mana_cost_value = \
-            self.builder.get_object("label_card_mana_cost_value")
-        self.label_card_cmc_value = self.builder.get_object("label_card_cmc_value")
-        self.label_card_types_value = \
-            self.builder.get_object("label_card_types_value")
-        self.label_card_text_value = self.builder.get_object("label_card_text_value")
         self.scrolledwindow_curve = self.builder.get_object('scrolledwindow_curve')
 
         self.liststore_deck = self.builder.get_object("liststore_deck")
@@ -93,9 +86,6 @@ class MtgDeckEditor:
         query = widget.get_text()
         card = get_card(query)
         self.image_card.set_from_pixbuf(card.pixbuf)
-        self.label_card_name_value.set_text(card.name)
-        self.label_card_cmc_value.set_text(card.cmc)
-        self.label_card_types_value.set_text(card.types)
 
     def on_button_new_clicked(self, widget, data=None):
         self.clear()
