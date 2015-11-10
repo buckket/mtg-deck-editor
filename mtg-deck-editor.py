@@ -147,7 +147,9 @@ class MtgDeckEditor:
                 amount = row[0]
                 name = row[1]
                 card = get_card(name)
-                if card.cmc == str(cmc):
+                if card.cmc_lower == cmc:
+                    if 'Land' in card.types:
+                        continue
                     color = card.color
                     curve[color][cmc] += int(amount)
 
