@@ -90,14 +90,53 @@ class MtgDeckEditor:
         if new_amount > 0:
             self.liststore_deck.append([new_amount, card.name])
 
-    def on_button_hand_clicked(self, widget, data=None):
+    def draw_hand(self, size):
         library = Library(self.liststore_deck)
         library.shuffle()
         for i in range(7):
             image_hand = self.builder.get_object("image_hand%s" % i)
             card = library.draw()
-            image_hand.set_from_pixbuf(card.pixbuf)
+            if i < size:
+                image_hand.set_from_pixbuf(card.pixbuf)
+            else:
+                image_hand.set_from_stock(Gtk.STOCK_MISSING_IMAGE,
+                                          Gtk.IconSize.LARGE_TOOLBAR)
+
+    def on_button_hand_clicked(self, widget, data=None):
+        self.draw_hand(7)
         self.window_hand.show_all()
+
+    def on_button_hand_close_clicked(self, widget, data=None):
+        self.window_hand.hide()
+
+    def on_button_hand_mulligan_6_clicked(self, widget, data=None):
+        widget.hide()
+        self.draw_hand(6)
+        self.builder.get_object("button_hand_mulligan_5").show()
+
+    def on_button_hand_mulligan_5_clicked(self, widget, data=None):
+        widget.hide()
+        self.draw_hand(5)
+        self.builder.get_object("button_hand_mulligan_4").show()
+
+    def on_button_hand_mulligan_4_clicked(self, widget, data=None):
+        widget.hide()
+        self.draw_hand(4)
+        self.builder.get_object("button_hand_mulligan_3").show()
+
+    def on_button_hand_mulligan_3_clicked(self, widget, data=None):
+        widget.hide()
+        self.draw_hand(3)
+        self.builder.get_object("button_hand_mulligan_2").show()
+
+    def on_button_hand_mulligan_2_clicked(self, widget, data=None):
+        widget.hide()
+        self.draw_hand(2)
+        self.builder.get_object("button_hand_mulligan_1").show()
+
+    def on_button_hand_mulligan_1_clicked(self, widget, data=None):
+        widget.hide()
+        self.draw_hand(1)
 
     def on_treeview_selection_changed(self, widget, data=None):
         tree, i = widget.get_selected()
