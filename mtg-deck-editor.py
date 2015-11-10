@@ -24,7 +24,6 @@ from gi.repository import Gio
 from gi.repository import Gtk
 from gi.repository.GdkPixbuf import Pixbuf
 
-from functools32 import lru_cache
 from operator import add
 from random import shuffle
 from requests import get
@@ -306,7 +305,6 @@ class Library:
     def draw(self):
         return get_card(self.cards.pop())
 
-lru_cache(maxsize=None)
 class Card:
     def __init__(self, query):
         self.query = query
