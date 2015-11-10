@@ -363,7 +363,7 @@ Mana Cost</property>
                       <object class="GtkLabel" id="notebook_card_label_text">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Rules Text</property>
+                        <property name="label" translatable="yes">Metadata</property>
                       </object>
                       <packing>
                         <property name="position">1</property>
