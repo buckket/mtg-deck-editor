@@ -86,9 +86,9 @@ class MtgDeckEditor:
             amount = row[0]
             name = row[1]
             if name == card.name:
-                self.liststore_deck.remove(row.iter)
                 new_amount = amount + self.adjustment_card_amount.get_value()
-                break
+                self.liststore_deck[row.iter][0] = new_amount
+                return
         self.liststore_deck.append([new_amount, card.name])
 
     def on_button_card_remove_clicked(self, widget, data=None):
@@ -99,11 +99,12 @@ class MtgDeckEditor:
             amount = row[0]
             name = row[1]
             if name == card.name:
-                self.liststore_deck.remove(row.iter)
                 new_amount = amount - self.adjustment_card_amount.get_value()
+                if new_amount > 0:
+                    self.liststore_deck[row.iter][0] = new_amount
+                else:
+                    self.liststore_deck.remove(row.iter)
                 break
-        if new_amount > 0:
-            self.liststore_deck.append([new_amount, card.name])
 
     def on_button_open_clicked(self, widget, data=None):
         self.filechooserdialog_open.show()
