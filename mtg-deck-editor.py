@@ -357,27 +357,27 @@ class Card:
         # colors = ['c', 'w', 'u', 'b', 'r', 'g', 'm']
         color = 'c' # colorless
         for s in self.mana_cost:
-            if s in (u'White', u'Two or White'):
+            if s in (u'White', u'Two or White', u'Phyrexian White'):
                 if color in ('c', 'w'):
                     color = 'w'
                 else:
                     color = 'm'
-            if s in (u'Blue', u'Two or Blue'):
+            if s in (u'Blue', u'Two or Blue', u'Phyrexian Blue'):
                 if color in ('c', 'u'):
                     color = 'u'
                 else:
                     color = 'm'
-            if s in (u'Black', u'Two or Black'):
+            if s in (u'Black', u'Two or Black', u'Phyrexian Black'):
                 if color in ('c', 'b'):
                     color = 'b'
                 else:
                     color = 'm'
-            if s in (u'Red', u'Two or Red'):
+            if s in (u'Red', u'Two or Red', u'Phyrexian Red'):
                 if color in ('c', 'r'):
                     color = 'r'
                 else:
                     color = 'm'
-            if s in (u'Green', u'Two or Green'):
+            if s in (u'Green', u'Two or Green', u'Phyrexian Green'):
                 if color in ('c', 'g'):
                     color = 'g'
                 else:
