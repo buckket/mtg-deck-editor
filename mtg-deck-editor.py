@@ -25,6 +25,7 @@ from gi.repository import Gtk
 from gi.repository.GdkPixbuf import Pixbuf
 
 from functools32 import lru_cache
+from operator import add
 from random import shuffle
 from requests import get
 from html5lib import parse
@@ -161,18 +162,24 @@ class MtgDeckEditor:
         # this plot uses tango palette colors
         bc=ax.bar(kc, vc, width=1, color='#c17d11', # “Chocolate”
                   )
+        bottom=vc
         bw=ax.bar(kw, vw, width=1, color='#d3d7cf', # “Aluminium”
-                  bottom=vc)
+                  bottom=bottom)
+        bottom=map(add, bottom, vw)
         bu=ax.bar(ku, vu, width=1, color='#3465a4', # “Sky blue”
-                  bottom=vw)
+                  bottom=bottom)
+        bottom=map(add, bottom, vu)
         bb=ax.bar(kb, vb, width=1, color='#555753', # “Slate”
-                  bottom=vu)
+                  bottom=bottom)
+        bottom=map(add, bottom, vb)
         br=ax.bar(kr, vr, width=1, color='#cc0000', # “Scarlet Red”
-                  bottom=vb)
+                  bottom=bottom)
+        bottom=map(add, bottom, vr)
         bg=ax.bar(kg, vg, width=1, color='#73d216', # “Chameleon”
-                  bottom=vr)
+                  bottom=bottom)
+        bottom=map(add, bottom, vg)
         bm=ax.bar(km, vm, width=1, color='#c4a000', # “Butter Shadow”
-                  bottom=vg)
+                  bottom=bottom)
         ax.plot()
 
         canvas_curve = FigureCanvas(fig)
