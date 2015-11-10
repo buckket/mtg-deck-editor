@@ -91,15 +91,11 @@ class MtgDeckEditor:
             self.liststore_deck.append([new_amount, card.name])
 
     def on_button_hand_clicked(self, widget, data=None):
-        library = []
-        for row in self.liststore_deck:
-            amount = row[0]
-            name = row[1]
-            library.extend(amount*[name])
-        shuffle(library)
+        library = Library(self.liststore_deck)
+        library.shuffle()
         for i in range(7):
             image_hand = self.builder.get_object("image_hand%s" % i)
-            card = Card(library[i])
+            card = library.draw()
             image_hand.set_from_pixbuf(card.pixbuf)
         self.window_hand.show_all()
 
@@ -111,6 +107,20 @@ class MtgDeckEditor:
     def on_window_hand_delete_event(self, widget, data=None):
         self.window_hand.hide()
         return True
+
+class Library:
+    def __init__(self, liststore):
+        self.cards = []
+        for row in liststore:
+            amount = row[0]
+            name = row[1]
+            self.cards.extend(amount*[name])
+
+    def shuffle(self):
+        shuffle(self.cards)
+
+    def draw(self):
+        return Card(self.cards.pop())
 
 lru_cache(maxsize=None)
 class Card:
