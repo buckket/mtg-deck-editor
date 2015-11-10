@@ -171,7 +171,7 @@ class MtgDeckEditor:
         # this plot uses tango palette colors
         bc=ax.bar(kc, vc, width=1, color='#c17d11', # “Chocolate”
                   )
-        bw=ax.bar(kw, vw, width=1, color='#eeeeec', # “Aluminium Highlight”
+        bw=ax.bar(kw, vw, width=1, color='#d3d7cf', # “Aluminium”
                   bottom=vc)
         bu=ax.bar(ku, vu, width=1, color='#3465a4', # “Sky blue”
                   bottom=vw)
