@@ -91,7 +91,6 @@ class MtgDeckEditor:
         self.label_card_name_value.set_text(card.name)
         self.label_card_cmc_value.set_text(card.cmc)
         self.label_card_types_value.set_text(card.types)
-        self.label_card_text_value.set_text(card.text)
 
     def on_button_new_clicked(self, widget, data=None):
         self.clear()
