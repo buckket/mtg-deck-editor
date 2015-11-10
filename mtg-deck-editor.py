@@ -18,14 +18,14 @@
 #       Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 #       MA 02110-1301, USA.
 
-from __future__ import print_function, with_statement
+from __future__ import with_statement
 
 from gi.repository import Gio
 from gi.repository import Gtk
 from gi.repository.GdkPixbuf import Pixbuf
 
 from functools32 import lru_cache
-from random import choice, shuffle
+from random import shuffle
 from requests import get
 from html5lib import parse
 
