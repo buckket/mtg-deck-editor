@@ -98,9 +98,9 @@ class MtgDeckEditor:
             card = library.draw()
             if i < size:
                 image_hand.set_from_pixbuf(card.pixbuf)
+                image_hand.show()
             else:
-                image_hand.set_from_stock(Gtk.STOCK_MISSING_IMAGE,
-                                          Gtk.IconSize.LARGE_TOOLBAR)
+                image_hand.hide()
 
     def on_button_hand_clicked(self, widget, data=None):
         self.draw_hand(7)
