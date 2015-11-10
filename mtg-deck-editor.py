@@ -382,6 +382,20 @@ class Card:
                     color = 'g'
                 else:
                     color = 'm'
+            # hybrid mana
+            if s in (
+                u'White or Blue',
+                u'White or Black'
+                u'Blue or Black',
+                u'Blue or Red',
+                u'Black or Red',
+                u'Black or Green',
+                u'Red or White',
+                u'Red or Green',
+                u'Green or Blue',
+                u'Green or White',
+                ):
+                color = 'm'
         return color
 
     def __str__(self):
