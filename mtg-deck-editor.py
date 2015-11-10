@@ -309,11 +309,13 @@ class Library:
 lru_cache(maxsize=None)
 class Card:
     def __init__(self, query):
+        self.query = query
+
         image_url = \
             "http://gatherer.wizards.com/Handlers/Image.ashx?type=card&name=%s" % \
             query
         # rotate split cards
-        if '//' in query:
+        if '//' in self.query:
             image_url= '%s&options=rotate90' % image_url
         image_raw = get(image_url).content
         input_stream = Gio.MemoryInputStream.new_from_data(image_raw, None)
@@ -322,15 +324,19 @@ class Card:
         # handle split cards
         html_url = \
             "http://gatherer.wizards.com/Pages/Card/Details.aspx?name=%s" % \
-            re.sub("(.*) // (.*)", r"[\1]+[//]+[\2]", query)
+            re.sub("(.*) // (.*)", r"[\1]+[//]+[\2]", self.query)
         html = get(html_url).text
         self.dom = parse(html, treebuilder='etree', namespaceHTMLElements=False)
 
     @property
     def name(self):
-        xpath = ".//*[@id='ctl00_ctl00_ctl00_MainContent_SubContent_SubContent_" + \
-            "%sRow']/div" % 'name'
-        return self.dom.findall(xpath)[1].text.strip().encode('utf-8')
+        try:
+            xpath = \
+                ".//*[@id='ctl00_ctl00_ctl00_MainContent_SubContent_SubContent_" + \
+                "%sRow']/div" % 'name'
+            return self.dom.findall(xpath)[1].text.strip().encode('utf-8')
+        except IndexError:
+            return self.query
 
     @property
     def mana_cost(self):
@@ -340,9 +346,13 @@ class Card:
 
     @property
     def types(self):
-        xpath = ".//*[@id='ctl00_ctl00_ctl00_MainContent_SubContent_SubContent_" + \
-            "%sRow']/div" % 'type'
-        return self.dom.findall(xpath)[1].text.strip().encode('utf-8')
+        try:
+            xpath = \
+                ".//*[@id='ctl00_ctl00_ctl00_MainContent_SubContent_SubContent_" + \
+                "%sRow']/div" % 'type'
+            return self.dom.findall(xpath)[1].text.strip().encode('utf-8')
+        except IndexError:
+            return 'unknown'
 
     @property
     def cmc(self):
