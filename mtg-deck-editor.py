@@ -35,6 +35,16 @@ import re
 from requests_cache import install_cache
 install_cache('mtg-deck-editor-cache')
 
+card_cache = {}
+
+def get_card(query):
+    try:
+        return card_cache[query]
+    except KeyError:
+        card = Card(query)
+        card_cache[query] = card
+        return card
+
 class MtgDeckEditor:
     def __init__(self):
         self.builder = Gtk.Builder()
@@ -56,7 +66,7 @@ class MtgDeckEditor:
 
     def on_searchentry_activate(self, widget, data=None):
         query = widget.get_text()
-        card = Card(query)
+        card = get_card(query)
         self.image_card.set_from_pixbuf(card.pixbuf)
 
     def on_button_new_clicked(self, widget, data=None):
@@ -65,7 +75,7 @@ class MtgDeckEditor:
 
     def on_button_card_add_clicked(self, widget, data=None):
         query = self.searchentry.get_text()
-        card = Card(query)
+        card = get_card(query)
         new_amount = 1
         for row in self.liststore_deck:
             amount = row[0]
@@ -78,7 +88,7 @@ class MtgDeckEditor:
 
     def on_button_card_remove_clicked(self, widget, data=None):
         query = self.searchentry.get_text()
-        card = Card(query)
+        card = get_card(query)
         new_amount = 0
         for row in self.liststore_deck:
             amount = row[0]
@@ -140,7 +150,7 @@ class MtgDeckEditor:
 
     def on_treeview_selection_changed(self, widget, data=None):
         tree, i = widget.get_selected()
-        card = Card(tree[i][1])
+        card = get_card(tree[i][1])
         self.image_card.set_from_pixbuf(card.pixbuf)
 
     def on_window_hand_delete_event(self, widget, data=None):
@@ -159,7 +169,7 @@ class Library:
         shuffle(self.cards)
 
     def draw(self):
-        return Card(self.cards.pop())
+        return get_card(self.cards.pop())
 
 lru_cache(maxsize=None)
 class Card:
