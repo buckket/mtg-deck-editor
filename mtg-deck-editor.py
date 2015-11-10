@@ -31,6 +31,9 @@ from html5lib import parse
 import os
 import re
 
+from requests_cache import install_cache
+install_cache('mtg-deck-editor-cache')
+
 class MtgDeckEditor:
     def __init__(self):
         builder = Gtk.Builder()
@@ -85,31 +88,48 @@ class MtgDeckEditor:
         if new_amount > 0:
             self.liststore_deck.append([new_amount, card.name])
 
+    def on_button_hand_clicked(self, widget, data=None):
+        library = []
+        for row in self.liststore_deck:
+            amount = row[0]
+            name = row[1]
+            library.append(amount*[name])
+        shuffle(deck)
+        for i in range(7):
+            image_hand = builder.get_object("image_hand%s" % i)
+            card = Card(deck[i])
+            image_hand.set_from_pixbuf(card.pixbuf)
+        self.window_hand.show_all()
+
     def on_treeview_selection_changed(self, widget, data=None):
         tree, i = widget.get_selected()
         card = Card(tree[i][1])
         self.image_card.set_from_pixbuf(card.pixbuf)
 
-@lru_cache(maxsize=None)
 class Card:
     def __init__(self, query):
+        self.query = query
+
+    @property
+    def pixbuf(self):
         image_url = \
             "http://gatherer.wizards.com/Handlers/Image.ashx?type=card&name=%s" % \
-            query
+            self.query
         # rotate split cards
-        if '//' in query:
+        if '//' in self.query:
             image_url= '%s&options=rotate90' % image_url
         image_raw = get(image_url).content
         input_stream = Gio.MemoryInputStream.new_from_data(image_raw, None)
-        self.pixbuf = Pixbuf.new_from_stream(input_stream, None)
+        return Pixbuf.new_from_stream(input_stream, None)
 
+    @property
+    def dom(self):
         # handle split cards
-        query = re.sub("(.*) // (.*)", r"[\1]+[//]+[\2]", query)
         html_url = \
             "http://gatherer.wizards.com/Pages/Card/Details.aspx?name=%s" % \
-            query
+            re.sub("(.*) // (.*)", r"[\1]+[//]+[\2]", self.query)
         html = get(html_url).text
-        self.dom = parse(html, treebuilder='etree', namespaceHTMLElements=False)
+        return parse(html, treebuilder='etree', namespaceHTMLElements=False)
 
     @property
     def name(self):
