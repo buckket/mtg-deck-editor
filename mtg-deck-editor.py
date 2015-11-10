@@ -25,6 +25,7 @@ from gi.repository import Gtk
 from gi.repository.GdkPixbuf import Pixbuf
 
 from functools32 import lru_cache
+from random import shuffle
 from requests import get
 from html5lib import parse
 
@@ -36,20 +37,21 @@ install_cache('mtg-deck-editor-cache')
 
 class MtgDeckEditor:
     def __init__(self):
-        builder = Gtk.Builder()
-        builder.add_from_file("Interface.GtkBuilder")
-        builder.connect_signals(self)
+        self.builder = Gtk.Builder()
+        self.builder.add_from_file("Interface.GtkBuilder")
+        self.builder.connect_signals(self)
 
-        self.window = builder.get_object("window")
-        self.image_card = builder.get_object("image_card")
-        self.searchentry = builder.get_object("searchentry")
-        self.liststore_deck = builder.get_object("liststore_deck")
+        self.window_main = self.builder.get_object("window_main")
+        self.window_hand = self.builder.get_object("window_hand")
+        self.image_card = self.builder.get_object("image_card")
+        self.searchentry = self.builder.get_object("searchentry")
+        self.liststore_deck = self.builder.get_object("liststore_deck")
 
     def main(self):
-        self.window.show_all()
+        self.window_main.show_all()
         Gtk.main()
 
-    def on_window_destroy(self, widget, data=None):
+    def on_window_main_destroy(self, widget, data=None):
         Gtk.main_quit()
 
     def on_searchentry_activate(self, widget, data=None):
@@ -93,11 +95,11 @@ class MtgDeckEditor:
         for row in self.liststore_deck:
             amount = row[0]
             name = row[1]
-            library.append(amount*[name])
-        shuffle(deck)
+            library.extend(amount*[name])
+        shuffle(library)
         for i in range(7):
-            image_hand = builder.get_object("image_hand%s" % i)
-            card = Card(deck[i])
+            image_hand = self.builder.get_object("image_hand%s" % i)
+            card = Card(library[i])
             image_hand.set_from_pixbuf(card.pixbuf)
         self.window_hand.show_all()
 
@@ -105,6 +107,10 @@ class MtgDeckEditor:
         tree, i = widget.get_selected()
         card = Card(tree[i][1])
         self.image_card.set_from_pixbuf(card.pixbuf)
+
+    def on_window_hand_delete_event(self, widget, data=None):
+        self.window_hand.hide()
+        return True
 
 lru_cache(maxsize=None)
 class Card:
