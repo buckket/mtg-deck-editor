@@ -269,9 +269,13 @@ class Card:
 
     @property
     def cmc(self):
-        xpath = ".//*[@id='ctl00_ctl00_ctl00_MainContent_SubContent_SubContent_" + \
-            "%sRow']/div" % 'cmc'
-        return self.dom.findall(xpath)[1].text.strip().encode('utf-8')
+        try:
+            xpath = \
+                ".//*[@id='ctl00_ctl00_ctl00_MainContent_SubContent_SubContent_" + \
+                "%sRow']/div" % 'cmc'
+            return self.dom.findall(xpath)[1].text.strip().encode('utf-8')
+        except IndexError:
+            return '0'
 
     @property
     def text(self):
