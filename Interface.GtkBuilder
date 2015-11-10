@@ -133,7 +133,6 @@
                   <object class="GtkSearchEntry" id="searchentry">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="text" translatable="yes">Counterspell</property>
                     <property name="primary_icon_stock">gtk-find</property>
                     <property name="primary_icon_name">edit-find-symbolic</property>
                     <property name="primary_icon_activatable">False</property>
