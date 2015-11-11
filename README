@@ -1,2 +1,5 @@
 Under Debian GNU/Linux, install dependencies with:
-apt-get install python-html5lib python-matplotlib python-requests python-requests-cache
+apt-get install python-html5lib python-matplotlib python-requests
+
+Under Debian GNU/Linux, install recommendations with:
+apt-get install python-requests-cache
