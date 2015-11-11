@@ -35,8 +35,11 @@ from matplotlib.backends.backend_gtk3cairo import FigureCanvasGTK3Cairo as Figur
 import os
 import re
 
-from requests_cache import install_cache
-install_cache('mtg-deck-editor-cache')
+try:
+    from requests_cache import install_cache
+    install_cache('mtg-deck-editor-cache')
+except ImportError:
+    pass
 
 card_cache = {}
 
