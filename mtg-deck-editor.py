@@ -20,8 +20,7 @@
 
 from __future__ import with_statement
 
-from gi.repository import Gio
-from gi.repository import Gtk
+from gi.repository import GLib, Gio, Gtk, GObject
 from gi.repository.GdkPixbuf import Pixbuf
 
 from operator import add
@@ -34,6 +33,8 @@ from matplotlib.backends.backend_gtk3cairo import FigureCanvasGTK3Cairo as Figur
 
 import os
 import re
+import threading
+GObject.threads_init()
 
 try:
     from requests_cache import install_cache
@@ -82,29 +83,55 @@ class MtgDeckEditor:
         for row in self.liststore_deck:
             self.liststore_deck.remove(row.iter)
 
+    def add_card(self, query, amount):
+        def add_card_async(query, amount):
+            def add_card_callback(name, amount):
+                self.liststore_deck.append([amount, name])
+                return False
+
+            card = get_card(query)
+            GLib.idle_add(add_card_callback, card.name, amount)
+            return False
+
+        thread = threading.Thread(target=add_card_async, args=(query,amount))
+        thread.daemon = True
+        thread.start()
+
+    def display_card(self, query):
+        def display_card_async(query):
+            def display_card_callback(pixbuf):
+                self.image_card.set_from_pixbuf(pixbuf)
+                return False
+
+            card = get_card(query)
+            GLib.idle_add(display_card_callback, card.pixbuf)
+
+        thread = threading.Thread(target=display_card_async, args=(query,))
+        thread.daemon = True
+        thread.start()
+
     def on_window_main_destroy(self, widget, data=None):
         Gtk.main_quit()
 
     def on_searchentry_activate(self, widget, data=None):
         query = widget.get_text()
-        card = get_card(query)
-        self.image_card.set_from_pixbuf(card.pixbuf)
+        self.display_card(query)
 
     def on_button_new_clicked(self, widget, data=None):
         self.clear()
 
     def on_button_card_add_clicked(self, widget, data=None):
         query = self.searchentry.get_text()
-        card = get_card(query)
+        self.display_card(query)
         new_amount = self.adjustment_card_amount.get_value()
         for row in self.liststore_deck:
             amount = row[0]
             name = row[1]
-            if name == card.name:
+            if name == query:
                 new_amount = amount + self.adjustment_card_amount.get_value()
                 self.liststore_deck[row.iter][0] = new_amount
                 return
-        self.liststore_deck.append([new_amount, card.name])
+        self.liststore_deck.append([new_amount, query])
 
     def on_button_card_remove_clicked(self, widget, data=None):
         query = self.searchentry.get_text()
@@ -216,8 +243,7 @@ class MtgDeckEditor:
                     continue
                 name = ' '.join(tokens[1:])
                 if name != '':
-                    card = get_card(name)
-                    self.liststore_deck.append([amount, card.name])
+                    self.add_card(name, amount)
 
     def on_button_save_clicked(self, widget, data=None):
         self.filechooserdialog_save.show()
@@ -314,7 +340,7 @@ class Card:
 
         image_url = \
             "http://gatherer.wizards.com/Handlers/Image.ashx?type=card&name=%s" % \
-            query
+            self.query
         # rotate split cards
         if '//' in self.query:
             image_url= '%s&options=rotate90' % image_url
