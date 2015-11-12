@@ -68,6 +68,7 @@ class MtgDeckEditor:
             self.builder.get_object("filechooserdialog_save")
 
         self.searchentry = self.builder.get_object("searchentry")
+        self.spinner_search = self.builder.get_object("spinner_search")
         self.image_card = self.builder.get_object("image_card")
         self.scrolledwindow_curve = self.builder.get_object('scrolledwindow_curve')
 
@@ -101,11 +102,19 @@ class MtgDeckEditor:
         def display_card_async(query):
             def display_card_callback(pixbuf):
                 self.image_card.set_from_pixbuf(pixbuf)
+                self.searchentry.set_sensitive(True)
+                self.spinner_search.stop()
+                self.spinner_search.hide()
+                self.image_card.show()
                 return False
 
             card = get_card(query)
             GLib.idle_add(display_card_callback, card.pixbuf)
 
+        self.searchentry.set_sensitive(False)
+        self.spinner_search.start()
+        self.spinner_search.show()
+        self.image_card.hide()
         thread = threading.Thread(target=display_card_async, args=(query,))
         thread.daemon = True
         thread.start()
