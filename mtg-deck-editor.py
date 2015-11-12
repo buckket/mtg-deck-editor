@@ -250,6 +250,10 @@ class MtgDeckEditor:
     def on_filechooserdialog_open_file_activated(self, widget, data=None):
         self.on_button_open_file_clicked(widget)
 
+    def on_filechooserdialog_open_delete_event(self, widget, data=None):
+        self.filechooserdialog_open.hide()
+        return True
+
     def on_button_open_file_clicked(self, widget, data=None):
         self.filechooserdialog_open.hide()
         filename = self.filechooserdialog_open.get_filename()
@@ -272,6 +276,10 @@ class MtgDeckEditor:
 
     def on_button_save_cancel_clicked(self, widget, data=None):
         self.filechooserdialog_save.hide()
+
+    def on_filechooserdialog_save_delete_event(self, widget, data=None):
+        self.filechooserdialog_save.hide()
+        return True
 
     def on_button_save_file_clicked(self, widget, data=None):
         self.filechooserdialog_save.hide()
