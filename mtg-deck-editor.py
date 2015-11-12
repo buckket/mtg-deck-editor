@@ -74,6 +74,7 @@ class MtgDeckEditor:
         self.spinner_search = self.builder.get_object("spinner_search")
         self.image_card = self.builder.get_object("image_card")
         self.scrolledwindow_curve = self.builder.get_object('scrolledwindow_curve')
+        self.buttonbox_add_remove = self.builder.get_object("buttonbox_add_remove")
 
         self.liststore_deck = self.builder.get_object("liststore_deck")
         self.adjustment_card_amount = \
@@ -114,6 +115,7 @@ class MtgDeckEditor:
         def display_card_async(query):
             def display_card_callback(pixbuf):
                 self.image_card.set_from_pixbuf(pixbuf)
+                self.buttonbox_add_remove.set_sensitive(True)
                 self.searchentry.set_sensitive(True)
                 self.spinner_search.stop()
                 self.spinner_search.hide()
@@ -124,6 +126,7 @@ class MtgDeckEditor:
             GLib.idle_add(display_card_callback, card.pixbuf)
 
         self.searchentry.set_sensitive(False)
+        self.buttonbox_add_remove.set_sensitive(False)
         self.spinner_search.start()
         self.spinner_search.show()
         self.image_card.hide()
