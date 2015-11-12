@@ -67,6 +67,9 @@ class MtgDeckEditor:
         self.filechooserdialog_save = \
             self.builder.get_object("filechooserdialog_save")
 
+        self.progressbar = self.builder.get_object("progressbar")
+        self.treeview_deck = self.builder.get_object("treeview_deck")
+
         self.searchentry = self.builder.get_object("searchentry")
         self.spinner_search = self.builder.get_object("spinner_search")
         self.image_card = self.builder.get_object("image_card")
@@ -84,17 +87,26 @@ class MtgDeckEditor:
         for row in self.liststore_deck:
             self.liststore_deck.remove(row.iter)
 
-    def add_card(self, query, amount):
-        def add_card_async(query, amount):
-            def add_card_callback(name, amount):
+    def add_card(self, query, amount, total_cards):
+        def add_card_async(query, amount, total_cards):
+            def add_card_callback(name, amount, total_cards):
                 self.liststore_deck.append([amount, name])
+                current_progress = self.progressbar.get_fraction()
+                self.progressbar.set_fraction(current_progress + (1.0/total_cards))
+                if self.progressbar.get_fraction() > 0.999:
+                    self.progressbar.hide()
+                    self.treeview_deck.set_sensitive(True)
                 return False
 
             card = get_card(query)
-            GLib.idle_add(add_card_callback, card.name, amount)
+            GLib.idle_add(add_card_callback, card.name, amount, total_cards)
             return False
 
-        thread = threading.Thread(target=add_card_async, args=(query,amount))
+        self.treeview_deck.set_sensitive(False)
+        self.progressbar.set_fraction(0)
+        self.progressbar.show()
+        thread = threading.Thread(target=add_card_async,
+                                  args=(query,amount,total_cards))
         thread.daemon = True
         thread.start()
 
@@ -244,6 +256,7 @@ class MtgDeckEditor:
         self.clear()
         with open(filename) as deckfile:
             data = deckfile.read()
+            total_cards = len(data.split('\n')) - 1
             for line in data.split('\n'):
                 tokens = line.split(' ')
                 try:
@@ -252,7 +265,7 @@ class MtgDeckEditor:
                     continue
                 name = ' '.join(tokens[1:])
                 if name != '':
-                    self.add_card(name, amount)
+                    self.add_card(name, amount, total_cards)
 
     def on_button_save_clicked(self, widget, data=None):
         self.filechooserdialog_save.show()
