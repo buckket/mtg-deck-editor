@@ -66,6 +66,7 @@ class MtgDeckEditor:
             self.builder.get_object("filechooserdialog_open")
         self.filechooserdialog_save = \
             self.builder.get_object("filechooserdialog_save")
+        self.recentmanager = Gtk.RecentManager.get_default()
 
         self.progressbar = self.builder.get_object("progressbar")
         self.treeview_deck = self.builder.get_object("treeview_deck")
@@ -260,6 +261,7 @@ class MtgDeckEditor:
     def on_button_open_file_clicked(self, widget, data=None):
         self.filechooserdialog_open.hide()
         filename = self.filechooserdialog_open.get_filename()
+        self.recentmanager.add_item(filename)
         self.clear()
         with open(filename) as deckfile:
             data = deckfile.read()
@@ -287,6 +289,7 @@ class MtgDeckEditor:
     def on_button_save_file_clicked(self, widget, data=None):
         self.filechooserdialog_save.hide()
         filename = self.filechooserdialog_save.get_filename()
+        self.recentmanager.add_item(filename)
         with open(filename, 'w') as deckfile:
             for row in self.liststore_deck:
                 amount = row[0]
