@@ -31,6 +31,7 @@ from html5lib import parse
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_gtk3cairo import FigureCanvasGTK3Cairo as FigureCanvas
 
+import json
 import os
 import re
 import threading
@@ -78,6 +79,7 @@ class MtgDeckEditor:
         self.buttonbox_add_remove = self.builder.get_object("buttonbox_add_remove")
 
         self.liststore_deck = self.builder.get_object("liststore_deck")
+        self.liststore_search = self.builder.get_object("liststore_search")
         self.adjustment_card_amount = \
             self.builder.get_object("adjustment_card_amount")
 
@@ -112,6 +114,18 @@ class MtgDeckEditor:
         thread.daemon = True
         thread.start()
 
+    def add_entrycompletion(self, query):
+        def callback(source_object, result, user_data):
+            success, content, etag = source_object.load_contents_finish(result)
+            names = [x['name'] for x in json.loads(content)]
+            for name in names:
+                self.liststore_search.append([name])
+
+        self.cancellable = Gio.Cancellable()
+        typeahead_url = 'https://api.deckbrew.com/mtg/cards/typeahead?q=%s' % query
+        stream = Gio.File.new_for_uri(typeahead_url)
+        stream.load_contents_async(self.cancellable, callback, None)
+
     def display_card(self, query):
         def display_card_async(query):
             def display_card_callback(pixbuf):
@@ -141,6 +155,10 @@ class MtgDeckEditor:
     def on_searchentry_activate(self, widget, data=None):
         query = widget.get_text()
         self.display_card(query)
+
+    def on_searchentry_search_changed(self, widget, data=None):
+        query = widget.get_text()
+        self.add_entrycompletion(query)
 
     def on_button_new_clicked(self, widget, data=None):
         self.clear()
@@ -346,6 +364,9 @@ class MtgDeckEditor:
     def on_button_hand_mulligan_1_clicked(self, widget, data=None):
         widget.hide()
         self.draw_hand(1)
+
+    def on_entrycompletion_search_action_activated(self, widget, data=None):
+        self.searchentry.activate()
 
     def on_treeview_selection_changed(self, widget, data=None):
         tree, i = widget.get_selected()
