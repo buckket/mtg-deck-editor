@@ -76,6 +76,12 @@ class MtgDeckEditor:
         self.button_hand = self.builder.get_object("button_hand")
 
         self.searchentry = self.builder.get_object("searchentry")
+
+        # The following code is a workaround for a GtkBuilder bug.
+        # See <https://bugzilla.redhat.com/show_bug.cgi?id=907946>
+        entrycompletion_search = self.builder.get_object("entrycompletion_search")
+        entrycompletion_search.set_text_column(0)
+
         self.spinner_search = self.builder.get_object("spinner_search")
         self.image_card = self.builder.get_object("image_card")
         self.scrolledwindow_curve = self.builder.get_object('scrolledwindow_curve')
