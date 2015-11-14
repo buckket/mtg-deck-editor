@@ -128,7 +128,8 @@ class MtgDeckEditor:
             success, content, etag = source_object.load_contents_finish(result)
             names = [x['name'] for x in json.loads(content)]
             for name in names:
-                self.liststore_search.append([name])
+                if name not in [row[0] for row in self.liststore_search]:
+                    self.liststore_search.append([name])
 
         self.cancellable = Gio.Cancellable()
         typeahead_url = 'https://api.deckbrew.com/mtg/cards/typeahead?q=%s' % query
