@@ -217,6 +217,9 @@ class MtgDeckEditor:
 
         ax.set_title('Mana Curve')
 
+        ax.set_xlim([0,16])
+        ax.set_xticks(range(17))
+
         colors = ['c', 'w', 'u', 'b', 'r', 'g', 'm']
 
         curve={}
