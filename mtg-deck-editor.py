@@ -252,27 +252,36 @@ class MtgDeckEditor:
         vm = curve['m'].values()
 
         # this plot uses tango palette colors
-        bc=ax.bar(kc, vc, width=1, color='#c17d11', # “Chocolate”
-                  )
-        bottom=vc
-        bw=ax.bar(kw, vw, width=1, color='#d3d7cf', # “Aluminium”
-                  bottom=bottom)
-        bottom=map(add, bottom, vw)
-        bu=ax.bar(ku, vu, width=1, color='#3465a4', # “Sky blue”
-                  bottom=bottom)
-        bottom=map(add, bottom, vu)
-        bb=ax.bar(kb, vb, width=1, color='#555753', # “Slate”
-                  bottom=bottom)
-        bottom=map(add, bottom, vb)
-        br=ax.bar(kr, vr, width=1, color='#cc0000', # “Scarlet Red”
-                  bottom=bottom)
-        bottom=map(add, bottom, vr)
-        bg=ax.bar(kg, vg, width=1, color='#73d216', # “Chameleon”
-                  bottom=bottom)
-        bottom=map(add, bottom, vg)
-        bm=ax.bar(km, vm, width=1, color='#c4a000', # “Butter Shadow”
-                  bottom=bottom)
+        bottom = [0]*len(vc)
+        if sum(vc) > 0:
+            bc=ax.bar(kc, vc, width=1, color='#c17d11', # “Chocolate”
+                      bottom=bottom, label='Colorless')
+            bottom=map(add, bottom, vc)
+        if sum(vw) > 0:
+            bw=ax.bar(kw, vw, width=1, color='#d3d7cf', # “Aluminium”
+                      bottom=bottom, label='White')
+            bottom=map(add, bottom, vw)
+        if sum(vu) > 0:
+            bu=ax.bar(ku, vu, width=1, color='#3465a4', # “Sky blue”
+                      bottom=bottom, label='Blue')
+            bottom=map(add, bottom, vu)
+        if sum(vb) > 0:
+            bb=ax.bar(kb, vb, width=1, color='#555753', # “Slate”
+                      bottom=bottom, label='Black')
+            bottom=map(add, bottom, vb)
+        if sum(vr) > 0:
+            br=ax.bar(kr, vr, width=1, color='#cc0000', # “Scarlet Red”
+                      bottom=bottom, label='Red')
+            bottom=map(add, bottom, vr)
+        if sum(vg) > 0:
+            bg=ax.bar(kg, vg, width=1, color='#73d216', # “Chameleon”
+                      bottom=bottom, label='Green')
+            bottom=map(add, bottom, vg)
+        if sum(vm) > 0:
+            bm=ax.bar(km, vm, width=1, color='#c4a000', # “Butter Shadow”
+                      bottom=bottom, label='Multicolor')
         ax.plot()
+        ax.legend()
 
         canvas_curve = FigureCanvas(fig)
         self.scrolledwindow_curve.add_with_viewport(canvas_curve)
