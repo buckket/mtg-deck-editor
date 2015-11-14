@@ -72,6 +72,9 @@ class MtgDeckEditor:
         self.progressbar = self.builder.get_object("progressbar")
         self.treeview_deck = self.builder.get_object("treeview_deck")
 
+        self.button_curve = self.builder.get_object("button_curve")
+        self.button_hand = self.builder.get_object("button_hand")
+
         self.searchentry = self.builder.get_object("searchentry")
         self.spinner_search = self.builder.get_object("spinner_search")
         self.image_card = self.builder.get_object("image_card")
@@ -151,6 +154,23 @@ class MtgDeckEditor:
 
     def on_window_main_destroy(self, widget, data=None):
         Gtk.main_quit()
+
+    def on_liststore_deck_row_changed(self, widget, path=None, iterator=None):
+        total_cards = sum([row[0] for row in self.liststore_deck])
+        if total_cards == 0:
+            self.button_curve.set_sensitive(False)
+        else:
+            self.button_curve.set_sensitive(True)
+        if total_cards < 7:
+            self.button_hand.set_sensitive(False)
+        else:
+            self.button_hand.set_sensitive(True)
+
+    def on_liststore_deck_row_deleted(self, widget, data=None):
+        self.on_liststore_deck_row_changed(widget)
+
+    def on_liststore_deck_row_inserted(self, widget, path=None, iterator=None):
+        self.on_liststore_deck_row_changed(widget, path, iterator)
 
     def on_searchentry_activate(self, widget, data=None):
         query = widget.get_text()

@@ -23,6 +23,9 @@
       <!-- column-name name -->
       <column type="gchararray"/>
     </columns>
+    <signal name="row-changed" handler="on_liststore_deck_row_changed" swapped="no"/>
+    <signal name="row-deleted" handler="on_liststore_deck_row_deleted" swapped="no"/>
+    <signal name="row-inserted" handler="on_liststore_deck_row_inserted" swapped="no"/>
   </object>
   <object class="GtkListStore" id="liststore_search">
     <columns>
@@ -103,6 +106,7 @@
             <child>
               <object class="GtkToolButton" id="button_hand">
                 <property name="visible">True</property>
+                <property name="sensitive">False</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Sample _Hand</property>
                 <property name="use_underline">True</property>
@@ -117,6 +121,7 @@
             <child>
               <object class="GtkToolButton" id="button_curve">
                 <property name="visible">True</property>
+                <property name="sensitive">False</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Mana _Curve</property>
                 <property name="use_underline">True</property>
