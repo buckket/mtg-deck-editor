@@ -36,7 +36,6 @@
   <object class="GtkEntryCompletion" id="entrycompletion_search">
     <property name="model">liststore_search</property>
     <property name="text_column">1</property>
-    <property name="inline_completion">True</property>
     <signal name="action-activated" handler="on_entrycompletion_search_action_activated" swapped="no"/>
   </object>
   <object class="GtkWindow" id="window_main">
