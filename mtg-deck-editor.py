@@ -252,7 +252,7 @@ class MtgDeckEditor:
                 amount = row[0]
                 name = row[1]
                 card = get_card(name)
-                if card.cmc_lower == cmc:
+                if cmc in card.mana_costs:
                     if 'Land' in card.types:
                         continue
                     color = card.color
@@ -483,6 +483,17 @@ class Card:
         return [e.attrib['alt'] for e in self.dom.findall(xpath)]
 
     @property
+    def mana_costs(self):
+        costs = set()
+        costs.add(self.cmc)
+        for s in self.mana_cost:
+            if s.startswith('Phyrexian'):
+                costs.add(min(costs) - 1)
+            if ' or ' in s:
+                costs.add(min(costs) - 1)
+        return costs
+
+    @property
     def types(self):
         try:
             xpath = \
@@ -498,20 +509,9 @@ class Card:
             xpath = \
                 ".//*[@id='ctl00_ctl00_ctl00_MainContent_SubContent_SubContent_" + \
                 "%sRow']/div" % 'cmc'
-            return self.dom.findall(xpath)[1].text.strip().encode('utf-8')
+            return int(self.dom.findall(xpath)[1].text.strip().encode('utf-8'))
         except IndexError:
             return '0'
-
-    @property
-    def cmc_lower(self):
-        cmc_lower = 0
-        for s in self.mana_cost:
-            try:
-                cmc_lower += int(s)
-            except ValueError:
-                if not s.startswith('Phyrexian'):
-                    cmc_lower += 1
-        return cmc_lower
 
     @property
     def color(self):
