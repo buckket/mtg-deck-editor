@@ -235,6 +235,7 @@
                     <property name="primary_icon_activatable">False</property>
                     <property name="primary_icon_sensitive">False</property>
                     <property name="completion">entrycompletion_search</property>
+                    <property name="input_hints">GTK_INPUT_HINT_UPPERCASE_WORDS | GTK_INPUT_HINT_NONE</property>
                     <signal name="activate" handler="on_searchentry_activate" swapped="no"/>
                     <signal name="search-changed" handler="on_searchentry_search_changed" swapped="no"/>
                   </object>
