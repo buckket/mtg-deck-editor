@@ -132,7 +132,8 @@ class MtgDeckEditor:
             success, content, etag = source_object.load_contents_finish(result)
             names = [x['name'] for x in json.loads(content)]
             for name in names:
-                if name not in [row[0] for row in self.liststore_search]:
+                if name not in [row[0].decode('utf-8') for
+                                row in self.liststore_search]:
                     self.liststore_search.append([name])
 
         self.cancellable = Gio.Cancellable()
