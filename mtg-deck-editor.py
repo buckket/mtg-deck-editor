@@ -155,6 +155,7 @@ class MtgDeckEditor:
                 return False
 
             card = get_card(query)
+            self.searchentry.set_text(card.name)
             GLib.idle_add(display_card_callback, query, card.pixbuf)
 
         self.searchentry.set_sensitive(False)
