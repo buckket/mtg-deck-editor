@@ -249,14 +249,28 @@ class MtgDeckEditor:
             for color in colors:
                 curve[color][cmc] = 0
             for row in self.liststore_deck:
-                amount = row[0]
+                amount = int(row[0])
                 name = row[1]
                 card = get_card(name)
                 if cmc in card.mana_costs:
                     if 'Land' in card.types:
                         continue
                     color = card.color
-                    curve[color][cmc] += int(amount)
+                    hybrid = False
+                    phyrexian = False
+                    for s in card.mana_cost:
+                        if ' or ' in s:
+                            hybrid = True
+                        if s.startswith('Phyrexian'):
+                            phyrexian = True
+                    # highest hybrid mana cost only needs colorless mana
+                    if hybrid and cmc == max(card.mana_costs):
+                        curve['c'][cmc] += amount
+                    # lowest phyrexian mana cost only needs colorless mana
+                    elif phyrexian and cmc == min(card.mana_costs):
+                        curve['c'][cmc] += amount
+                    else:
+                        curve[color][cmc] += amount
 
         kc = [int(cmc) - 0.5 for cmc in curve['c'].keys()]
         vc = curve['c'].values()
