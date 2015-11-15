@@ -434,6 +434,11 @@ class MtgDeckEditor:
         self.searchentry.activate()
 
     def on_entrycompletion_search_match_selected(self, widget, prefix, data=None):
+        # Without the following two lines, self.searchentry.get_text() returns
+        # the text before the completion was selected, even if the entry shows
+        # the text including the completion.
+        query = self.liststore_search[data][0]
+        self.searchentry.set_text(query)
         self.searchentry.activate()
 
     def on_treeview_selection_changed(self, widget, data=None):
