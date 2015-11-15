@@ -270,13 +270,13 @@
                 <child>
                   <object class="GtkButtonBox" id="buttonbox_add_remove">
                     <property name="visible">True</property>
-                    <property name="sensitive">False</property>
                     <property name="can_focus">False</property>
                     <property name="layout_style">start</property>
                     <child>
                       <object class="GtkButton" id="button_card_add">
                         <property name="label">gtk-add</property>
                         <property name="visible">True</property>
+                        <property name="sensitive">False</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
                         <property name="use_stock">True</property>
@@ -292,6 +292,7 @@
                     <child>
                       <object class="GtkSpinButton" id="spinbutton_card_amount">
                         <property name="visible">True</property>
+                        <property name="sensitive">False</property>
                         <property name="can_focus">True</property>
                         <property name="input_purpose">number</property>
                         <property name="adjustment">adjustment_card_amount</property>
@@ -308,6 +309,7 @@
                       <object class="GtkButton" id="button_card_remove">
                         <property name="label">gtk-remove</property>
                         <property name="visible">True</property>
+                        <property name="sensitive">False</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
                         <property name="use_stock">True</property>

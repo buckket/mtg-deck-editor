@@ -85,7 +85,11 @@ class MtgDeckEditor:
         self.spinner_search = self.builder.get_object("spinner_search")
         self.image_card = self.builder.get_object("image_card")
         self.scrolledwindow_curve = self.builder.get_object('scrolledwindow_curve')
-        self.buttonbox_add_remove = self.builder.get_object("buttonbox_add_remove")
+
+        self.button_card_add = self.builder.get_object("button_card_add")
+        self.button_card_remove = self.builder.get_object("button_card_remove")
+        self.spinbutton_card_amount = \
+            self.builder.get_object("spinbutton_card_amount")
 
         self.liststore_deck = self.builder.get_object("liststore_deck")
         self.liststore_search = self.builder.get_object("liststore_search")
@@ -138,9 +142,12 @@ class MtgDeckEditor:
 
     def display_card(self, query):
         def display_card_async(query):
-            def display_card_callback(pixbuf):
+            def display_card_callback(query, pixbuf):
                 self.image_card.set_from_pixbuf(pixbuf)
-                self.buttonbox_add_remove.set_sensitive(True)
+                self.button_card_add.set_sensitive(True)
+                self.spinbutton_card_amount.set_sensitive(True)
+                if query in [row[1] for row in self.liststore_deck]:
+                    self.button_card_remove.set_sensitive(True)
                 self.searchentry.set_sensitive(True)
                 self.spinner_search.stop()
                 self.spinner_search.hide()
@@ -148,10 +155,12 @@ class MtgDeckEditor:
                 return False
 
             card = get_card(query)
-            GLib.idle_add(display_card_callback, card.pixbuf)
+            GLib.idle_add(display_card_callback, query, card.pixbuf)
 
         self.searchentry.set_sensitive(False)
-        self.buttonbox_add_remove.set_sensitive(False)
+        self.button_card_add.set_sensitive(False)
+        self.button_card_remove.set_sensitive(False)
+        self.spinbutton_card_amount.set_sensitive(False)
         self.spinner_search.start()
         self.spinner_search.show()
         self.image_card.hide()
@@ -216,6 +225,7 @@ class MtgDeckEditor:
                     self.liststore_deck[row.iter][0] = new_amount
                 else:
                     self.liststore_deck.remove(row.iter)
+                    self.button_card_remove.set_sensitive(False)
                 break
 
     def on_button_curve_clicked(self, widget, data=None):
