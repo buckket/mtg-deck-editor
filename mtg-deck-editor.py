@@ -417,6 +417,9 @@ class MtgDeckEditor:
     def on_entrycompletion_search_action_activated(self, widget, data=None):
         self.searchentry.activate()
 
+    def on_entrycompletion_search_match_selected(self, widget, prefix, data=None):
+        self.searchentry.activate()
+
     def on_treeview_selection_changed(self, widget, data=None):
         tree, i = widget.get_selected()
         self.searchentry.set_text(tree[i][1])

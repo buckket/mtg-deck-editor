@@ -37,6 +37,7 @@
     <property name="model">liststore_search</property>
     <property name="text_column">1</property>
     <signal name="action-activated" handler="on_entrycompletion_search_action_activated" swapped="no"/>
+    <signal name="match-selected" handler="on_entrycompletion_search_match_selected" swapped="no"/>
   </object>
   <object class="GtkWindow" id="window_main">
     <property name="can_focus">False</property>
