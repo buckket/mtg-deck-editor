@@ -236,7 +236,7 @@ class MtgDeckEditor:
 
         ax.set_title('Mana Curve')
 
-        ax.set_xlim([0,16])
+        ax.set_xlim([-0.5,16.5])
         ax.set_xticks(range(17))
 
         colors = ['c', 'w', 'u', 'b', 'r', 'g', 'm']
@@ -245,7 +245,7 @@ class MtgDeckEditor:
         for color in colors:
             curve[color] = {}
 
-        for cmc in range(15):
+        for cmc in range(17):
             for color in colors:
                 curve[color][cmc] = 0
             for row in self.liststore_deck:
