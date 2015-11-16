@@ -329,9 +329,10 @@ class MtgDeckEditor:
 
         self.window_curve.show_all()
 
-    def on_button_curve_close_clicked(self, widget, data=None):
+    def on_window_curve_delete_event(self, widget, data=None):
         self.scrolledwindow_curve.remove(self.scrolledwindow_curve.get_child())
         self.window_curve.hide()
+        return True
 
     def on_button_open_clicked(self, widget, data=None):
         self.filechooserdialog_open.show()
