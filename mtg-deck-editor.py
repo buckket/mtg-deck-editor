@@ -287,6 +287,11 @@ class MtgDeckEditor:
         km = [int(cmc) - 0.5 for cmc in curve['m'].keys()]
         vm = curve['m'].values()
 
+        ylim = max(
+            [sum([curve[color][cmc] for color in colors]) for cmc in range(17)]
+            ) + 4
+        ax.set_ylim(0, ylim)
+
         # this plot uses tango palette colors
         bottom = [0]*len(vc)
         if sum(vc) > 0:
