@@ -476,8 +476,10 @@ class Card:
         image_url = \
             "http://gatherer.wizards.com/Handlers/Image.ashx?type=card&name=%s" % \
             self.query
+        self.split = False
         # rotate split cards
         if '//' in self.query:
+            self.split = True
             image_url= '%s&options=rotate90' % image_url
         image_raw = get(image_url).content
         input_stream = Gio.MemoryInputStream.new_from_data(image_raw, None)
@@ -509,6 +511,17 @@ class Card:
     @property
     def mana_costs(self):
         costs = set()
+        if self.split:
+            xpath = ".//span[@class='manaCost']"
+            for subtree in self.dom.findall(xpath):
+                mana_symbols = [e.attrib['alt'] for e in subtree.findall('img')]
+                cost = 0
+                for s in mana_symbols:
+                    try:
+                        cost += int(s)
+                    except ValueError:
+                        cost += 1
+                costs.add(cost)
         costs.add(self.cmc)
         for s in self.mana_cost:
             if s.startswith('Phyrexian'):
