@@ -9,7 +9,10 @@ setup(
     author='buckket',
     author_email='buckket@cock.li',
 
-    py_modules=['mtg_deck_editor'],
+    packages=['mtgdeckeditor'],
+    package_data={
+        '': ['*.GtkBuilder'],
+    },
 
     zip_safe=True,
     include_package_data=True,
@@ -28,7 +31,7 @@ setup(
 
     entry_points={
         'gui_scripts': [
-            'mtg-deck-editor = mtg_deck_editor:main',
+            'mtg-deck-editor = mtgdeckeditor.__main__:main',
         ]
     },
 

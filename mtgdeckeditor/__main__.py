@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#       Copyright 2015 Nils Dagsson Moskopp // erlehmann
+#       Copyright 2015 Nils Dagsson Moskopp // erlehmann and others.
 
 #       This program is free software; you can redistribute it and/or modify
 #       it under the terms of the GNU General Public License as published by
@@ -19,6 +19,8 @@
 #       MA 02110-1301, USA.
 
 from __future__ import with_statement
+
+from pkg_resources import resource_string
 
 from gi.repository import GLib, Gio, Gtk, GObject
 from gi.repository.GdkPixbuf import Pixbuf
@@ -58,7 +60,7 @@ def get_card(query):
 class MtgDeckEditor:
     def __init__(self):
         self.builder = Gtk.Builder()
-        self.builder.add_from_file("Interface.GtkBuilder")
+        self.builder.add_from_string(resource_string(__name__, 'Interface.GtkBuilder'))
         self.builder.connect_signals(self)
 
         self.window_main = self.builder.get_object("window_main")
