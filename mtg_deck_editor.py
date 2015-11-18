@@ -31,7 +31,6 @@ from html5lib import parse
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_gtk3cairo import FigureCanvasGTK3Cairo as FigureCanvas
 
-import os
 import re
 import sys
 import json
@@ -46,6 +45,7 @@ except ImportError:
 
 card_cache = {}
 
+
 def get_card(query):
     try:
         return card_cache[query]
@@ -53,6 +53,7 @@ def get_card(query):
         card = Card(query)
         card_cache[query] = card
         return card
+
 
 class MtgDeckEditor:
     def __init__(self):
@@ -457,6 +458,7 @@ class MtgDeckEditor:
         self.window_hand.hide()
         return True
 
+
 class Library:
     def __init__(self, liststore):
         self.cards = []
@@ -470,6 +472,7 @@ class Library:
 
     def draw(self):
         return get_card(self.cards.pop())
+
 
 class Card:
     def __init__(self, query):
