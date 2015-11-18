@@ -1,2 +1,2 @@
-include LICENSE README
+include LICENSE INSTALL README.rst
 global-exclude *.py[cdo] __pycache__ *.so *.pyd
