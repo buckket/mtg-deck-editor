@@ -1,0 +1,2 @@
+include LICENSE README
+global-exclude *.py[cdo] __pycache__ *.so *.pyd

@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 #       Copyright 2015 Nils Dagsson Moskopp // erlehmann
@@ -31,9 +31,10 @@ from html5lib import parse
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_gtk3cairo import FigureCanvasGTK3Cairo as FigureCanvas
 
-import json
 import os
 import re
+import sys
+import json
 import threading
 GObject.threads_init()
 
@@ -600,6 +601,10 @@ class Card:
     def __str__(self):
         return "%s | %s | %s | %s" % (self.name, self.type, self.cmc, self.text)
 
-if __name__ == '__main__':
+
+def main():
     mde = MtgDeckEditor()
     mde.main()
+
+if __name__ == '__main__':
+    sys.exit(main())
