@@ -11,7 +11,7 @@ setup(
 
     packages=['mtgdeckeditor'],
     package_data={
-        '': ['*.GtkBuilder'],
+        'mtgdeckeditor': ['Interface.GtkBuilder'],
     },
 
     zip_safe=True,
@@ -46,7 +46,7 @@ setup(
         'Programming Language :: Python',
         'Operating System :: OS Independent',
         'Development Status :: 5 - Production/Stable',
-        'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
+        'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
         'Intended Audience :: End Users/Desktop',
         'Topic :: Games/Entertainment',
     ],
