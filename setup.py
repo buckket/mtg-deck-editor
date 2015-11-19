@@ -10,6 +10,7 @@ setup(
     author_email='buckket@cock.li',
 
     packages=['mtgdeckeditor'],
+    package_dir={'mtgdeckeditor': 'mtgdeckeditor'},
     package_data={
         'mtgdeckeditor': ['Interface.GtkBuilder'],
     },
