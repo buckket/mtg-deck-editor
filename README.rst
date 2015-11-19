@@ -10,6 +10,10 @@ Features
 - sample hand window, including mulligans button
 - mana curve plot shows colored mana requirements
 
+Screenshot
+----------
+.. image:: https://uncloaked.net/~loom/stuff/mtg_deck_editor.png
+
 Installation
 ------------
 Under Debian GNU/Linux, install major dependencies with:
@@ -23,6 +27,8 @@ Afterwards install this package simply via pip.
 .. code:: bash
 
     $ pip install mtg-deck-editor
+
+Now run ``mtg-deck-editor``. :)
 
 Links
 -----
