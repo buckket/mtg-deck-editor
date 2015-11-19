@@ -5,10 +5,10 @@ MtG Deck Editor is a deck editor for the card game Magic: The Gathering, that au
 
 Features
 --------
-- search autocompletion (uses DeckBrew API)
-- loading and saving decks as plain text files
-- sample hand window, including mulligans button
-- mana curve plot shows colored mana requirements
+- Search autocompletion (uses DeckBrew API)
+- Loading and saving decks as plain text files
+- Sample hand window, including mulligans button
+- Mana curve plot shows colored mana requirements
 
 Screenshot
 ----------
@@ -16,19 +16,19 @@ Screenshot
 
 Installation
 ------------
-Under Debian GNU/Linux, install major dependencies with:
+1) Under Debian GNU/Linux, install major dependencies with:
 
 .. code:: bash
 
     $ apt-get install gir1.2-gtk-3.0 python-gi-cairo python-matplotlib
 
-Afterwards install this package simply via pip.
+2) Afterwards install this package simply via pip.
 
 .. code:: bash
 
     $ pip install mtg-deck-editor
 
-Now run ``mtg-deck-editor``. :)
+3) Now run ``mtg-deck-editor``. :)
 
 Links
 -----
