@@ -20,6 +20,7 @@ setup(
     platforms='any',
 
     install_requires=[
+        'pyxdg',
         'requests',
         'requests-cache',
         'html5lib',

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 #       Copyright 2015 Nils Dagsson Moskopp // erlehmann and others.
 
@@ -33,6 +32,9 @@ from html5lib import parse
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_gtk3cairo import FigureCanvasGTK3Cairo as FigureCanvas
 
+import xdg.BaseDirectory
+
+import os
 import re
 import sys
 import json
@@ -41,7 +43,7 @@ GObject.threads_init()
 
 try:
     from requests_cache import install_cache
-    install_cache('mtg-deck-editor-cache')
+    install_cache(os.path.join(xdg.BaseDirectory.save_cache_path('mtg-deck-editor'), 'cards'), backend='sqlite')
 except ImportError:
     pass
 
