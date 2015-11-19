@@ -1,2 +1,3 @@
 include LICENSE INSTALL README.rst
+include mtgdeckeditor/Interface.GtkBuilder
 global-exclude *.py[cdo] __pycache__ *.so *.pyd
