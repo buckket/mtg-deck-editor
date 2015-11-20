@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name='mtg-deck-editor',
-    version='1.0.2',
+    version='1.0.3',
 
     url='https://github.com/buckket/mtg-deck-editor',
 
