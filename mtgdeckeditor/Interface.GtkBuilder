@@ -133,6 +133,19 @@
                 <property name="homogeneous">True</property>
               </packing>
             </child>
+            <child>
+              <object class="GtkToolButton" id="button_info">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">gtk-dialog-info</property>
+                <signal name="clicked" handler="on_button_info_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -694,6 +707,40 @@
             <property name="fill">True</property>
             <property name="position">10</property>
           </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkAboutDialog" id="window_aboutdialog">
+    <property name="can_focus">False</property>
+    <property name="type_hint">dialog</property>
+    <property name="gravity">center</property>
+    <property name="program_name">MtG Deck Editor</property>
+    <property name="version">1.0.4</property>
+    <property name="website">http://news.dieweltistgarnichtso.net/bin/mtg-deck-editor.html</property>
+    <property name="authors">Nils Dagsson Moskopp (erlehmann)
+Felix Bayer (buckket)</property>
+    <property name="logo_icon_name">help-about</property>
+    <property name="license_type">gpl-3-0</property>
+    <signal name="response" handler="on_window_aboutdialog_response" swapped="no"/>
+    <child internal-child="vbox">
+      <object class="GtkBox" id="aboutdialog-vbox1">
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox" id="aboutdialog-action_area1">
+            <property name="can_focus">False</property>
+            <property name="layout_style">end</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
         </child>
       </object>
     </child>

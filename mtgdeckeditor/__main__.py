@@ -69,6 +69,7 @@ class MtgDeckEditor:
         self.window_main = self.builder.get_object("window_main")
         self.window_curve = self.builder.get_object("window_curve")
         self.window_hand = self.builder.get_object("window_hand")
+        self.window_aboutdialog = self.builder.get_object("window_aboutdialog")
 
         self.filechooserdialog_open = \
             self.builder.get_object("filechooserdialog_open")
@@ -176,6 +177,9 @@ class MtgDeckEditor:
         thread = threading.Thread(target=display_card_async, args=(query,))
         thread.daemon = True
         thread.start()
+
+    def on_window_aboutdialog_response(self, widget, data=None):
+        self.window_aboutdialog.hide()
 
     def on_window_main_destroy(self, widget, data=None):
         Gtk.main_quit()
@@ -335,6 +339,9 @@ class MtgDeckEditor:
         self.scrolledwindow_curve.add_with_viewport(canvas_curve)
 
         self.window_curve.show_all()
+
+    def on_button_info_clicked(self, widget, data=None):
+        self.window_aboutdialog.show()
 
     def on_window_curve_delete_event(self, widget, data=None):
         self.scrolledwindow_curve.remove(self.scrolledwindow_curve.get_child())
